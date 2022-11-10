@@ -19,16 +19,25 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
+// 1. component list 주입
+// 2. map (key: beanName, value : service)
+// 3. enum
 
 @RestController
 @Slf4j
 @RequiredArgsConstructor
 public class AnimalController {
-    private final AnimalServiceFinder animalServiceFinder;
+//    private final AnimalServiceFinder animalServiceFinder;
+
+    private final Map<String, AnimalService> animalServices;
 
     @GetMapping("/sound")
     public String sound(@RequestParam String type) {
-        AnimalService service = animalServiceFinder.find(type);
-        return service.getSound();
+        log.info("animalService={}, keys={}",animalServices, animalServices.keySet());
+        AnimalService animalService = animalServices.get(type.toLowerCase() + "Service");
+        return animalService.getSound();
     }
 }
