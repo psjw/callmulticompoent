@@ -37,7 +37,8 @@ public class AnimalController {
     @GetMapping("/sound")
     public String sound(@RequestParam String type) {
         log.info("animalService={}, keys={}",animalServices, animalServices.keySet());
-        AnimalService animalService = animalServices.get(type.toLowerCase() + "Service");
+        AnimalType animalType = AnimalType.valueOf(type);
+        AnimalService animalService = animalType.create();
         return animalService.getSound();
     }
 }
